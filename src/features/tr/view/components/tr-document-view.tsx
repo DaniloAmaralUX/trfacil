@@ -1,5 +1,5 @@
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/shared/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
 import {
   Table,
   TableBody,
@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from '@/shared/ui/table'
 import { type TRDocumentSection } from '@/features/tr/data/templates'
 
 type TRDocumentStatus = {
@@ -42,7 +42,7 @@ export function TRDocumentView({
   })
 
   return (
-    <Card className='surface-card rounded-[28px] border-black/5 dark:border-white/10'>
+    <Card className='rounded-[28px] border-black/5 surface-card dark:border-white/10'>
       <CardHeader className='border-b border-border/60 pb-5'>
         <div className='flex flex-wrap items-start justify-between gap-3'>
           <CardTitle className='text-2xl font-semibold'>{title}</CardTitle>
@@ -60,10 +60,12 @@ export function TRDocumentView({
         {validSections.length ? (
           validSections.map((section) => (
             <section key={section.title} className='space-y-3'>
-              <h2 className='text-lg font-semibold text-balance'>{section.title}</h2>
+              <h2 className='text-lg font-semibold text-balance'>
+                {section.title}
+              </h2>
 
               {section.kind === 'prose' ? (
-                <p className='break-words text-sm leading-7 whitespace-pre-line text-muted-foreground text-pretty'>
+                <p className='text-sm leading-7 text-pretty break-words whitespace-pre-line text-muted-foreground'>
                   {section.content}
                 </p>
               ) : null}
@@ -78,7 +80,7 @@ export function TRDocumentView({
                       <dt className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
                         {item.label}
                       </dt>
-                      <dd className='mt-2 break-words text-sm leading-6 text-foreground'>
+                      <dd className='mt-2 text-sm leading-6 break-words text-foreground'>
                         {item.value}
                       </dd>
                     </div>
@@ -93,7 +95,9 @@ export function TRDocumentView({
                       <TableHeader>
                         <TableRow>
                           {section.columns.map((column) => (
-                            <TableHead key={`${section.title}-${column}`}>{column}</TableHead>
+                            <TableHead key={`${section.title}-${column}`}>
+                              {column}
+                            </TableHead>
                           ))}
                         </TableRow>
                       </TableHeader>
@@ -115,7 +119,8 @@ export function TRDocumentView({
                   </div>
                 ) : (
                   <div className='rounded-2xl border border-dashed border-black/5 bg-muted/20 p-6 text-sm text-muted-foreground dark:border-white/10'>
-                    {section.emptyMessage ?? 'Sem registros para exibir nesta seção.'}
+                    {section.emptyMessage ??
+                      'Sem registros para exibir nesta seção.'}
                   </div>
                 )
               ) : null}
@@ -123,7 +128,8 @@ export function TRDocumentView({
           ))
         ) : (
           <div className='rounded-2xl border border-dashed border-black/5 bg-muted/20 p-6 text-sm text-muted-foreground dark:border-white/10'>
-            Este documento ainda não possui seções suficientes para exibição consolidada.
+            Este documento ainda não possui seções suficientes para exibição
+            consolidada.
           </div>
         )}
       </CardContent>

@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { Download, FilePlus2 } from 'lucide-react'
 import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/shared/ui/button'
 
 export function TRsPrimaryButtons() {
   return (

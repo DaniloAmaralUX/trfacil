@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { SearchX } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/shared/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
 
 export function NotFoundError() {
   return (

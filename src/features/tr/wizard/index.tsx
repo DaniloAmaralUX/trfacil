@@ -12,11 +12,10 @@ import {
   Trash2,
 } from 'lucide-react'
 import { toast } from 'sonner'
-import { ConfigDrawer } from '@/components/config-drawer'
-import { Header } from '@/components/layout/header'
-import { Main } from '@/components/layout/main'
-import { ProfileDropdown } from '@/components/profile-dropdown'
-import { ThemeSwitch } from '@/components/theme-switch'
+import { Header } from '@/shared/layout/header'
+import { HeaderActions } from '@/shared/layout/header-actions'
+import { Main } from '@/shared/layout/main'
+import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,28 +25,27 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+} from '@/shared/ui/alert-dialog'
+import { Badge } from '@/shared/ui/badge'
+import { Button } from '@/shared/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { ScrollArea } from '@/components/ui/scroll-area'
+} from '@/shared/ui/card'
+import { Input } from '@/shared/ui/input'
+import { Label } from '@/shared/ui/label'
+import { ScrollArea } from '@/shared/ui/scroll-area'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
+} from '@/shared/ui/select'
+import { Separator } from '@/shared/ui/separator'
 import {
   Table,
   TableBody,
@@ -55,8 +53,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { Textarea } from '@/components/ui/textarea'
+} from '@/shared/ui/table'
+import { Textarea } from '@/shared/ui/textarea'
 import {
   type TRDeliveryLocation,
   type TRFieldDefinition,
@@ -81,6 +79,11 @@ type StepErrors = Record<string, string>
 type PendingTemplateChange = {
   institution: TRInstitution
   templateType: TRTemplateType
+}
+
+type StepErrorState = {
+  scope: string
+  values: StepErrors
 }
 
 export function TRWizardPage() {
@@ -111,7 +114,10 @@ export function TRWizardPage() {
     completeSubmission,
   } = useTRWizard()
 
-  const template = getTemplateDefinition(context.institution, context.templateType)
+  const template = getTemplateDefinition(
+    context.institution,
+    context.templateType
+  )
   const wizardSteps = useMemo<TRSectionDefinition[]>(
     () => [
       {
@@ -128,9 +134,16 @@ export function TRWizardPage() {
   )
   const currentSection = wizardSteps[currentStep]
   const templateOptions = getTemplateOptions(context.institution)
-  const [errors, setErrors] = useState<StepErrors>({})
+  const errorScope = `${currentStep}:${context.institution}:${context.templateType}`
+  const [stepErrorState, setStepErrorState] = useState<StepErrorState>({
+    scope: '',
+    values: {},
+  })
   const [pendingTemplateChange, setPendingTemplateChange] =
     useState<PendingTemplateChange | null>(null)
+
+  const errors =
+    stepErrorState.scope === errorScope ? stepErrorState.values : {}
 
   const documentSections = useMemo(
     () => buildDocumentSections(context, template, documentData),
@@ -138,7 +151,8 @@ export function TRWizardPage() {
   )
 
   const completionPercent = Math.round(
-    (reviewState.completedRequired / Math.max(reviewState.totalRequired, 1)) * 100
+    (reviewState.completedRequired / Math.max(reviewState.totalRequired, 1)) *
+      100
   )
 
   useEffect(() => {
@@ -165,10 +179,6 @@ export function TRWizardPage() {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
   }, [isDirty])
 
-  useEffect(() => {
-    setErrors({})
-  }, [currentStep, context.institution, context.templateType])
-
   const handleSaveDraft = () => {
     saveDraft()
     toast.success('Rascunho salvo com sucesso.')
@@ -187,8 +197,13 @@ export function TRWizardPage() {
   }
 
   const handleAdvance = () => {
-    const nextErrors = validateCurrentStep(currentSection, context, documentData, template)
-    setErrors(nextErrors)
+    const nextErrors = validateCurrentStep(
+      currentSection,
+      context,
+      documentData,
+      template
+    )
+    setStepErrorState({ scope: errorScope, values: nextErrors })
 
     if (Object.keys(nextErrors).length > 0) {
       focusField(Object.keys(nextErrors)[0])
@@ -204,7 +219,8 @@ export function TRWizardPage() {
     templateType: TRTemplateType
   ) => {
     const isChanging =
-      institution !== context.institution || templateType !== context.templateType
+      institution !== context.institution ||
+      templateType !== context.templateType
 
     if (!isChanging) return
 
@@ -238,18 +254,14 @@ export function TRWizardPage() {
   return (
     <>
       <Header fixed>
-        <div className='ms-auto flex items-center gap-4'>
-          <ThemeSwitch />
-          <ConfigDrawer />
-          <ProfileDropdown />
-        </div>
+        <HeaderActions />
       </Header>
 
       <Main className='space-y-6 pb-8'>
         <section className='rounded-[32px] border border-black/5 bg-[radial-gradient(circle_at_top_left,rgba(15,23,42,0.06),transparent_38%),linear-gradient(180deg,rgba(248,250,252,0.95),rgba(241,245,249,0.78))] p-6 shadow-sm dark:border-white/10 dark:bg-[radial-gradient(circle_at_top_left,rgba(148,163,184,0.14),transparent_36%),linear-gradient(180deg,rgba(2,6,23,0.92),rgba(15,23,42,0.72))]'>
           <div className='flex flex-wrap items-start justify-between gap-5'>
             <div className='max-w-3xl space-y-3'>
-              <div className='inline-flex items-center gap-2 rounded-full border border-black/5 bg-background/85 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-primary dark:border-white/10'>
+              <div className='inline-flex items-center gap-2 rounded-full border border-black/5 bg-background/85 px-3 py-1 text-xs font-semibold tracking-[0.16em] text-primary uppercase dark:border-white/10'>
                 <ClipboardList aria-hidden='true' className='size-3.5' />
                 Sala de preparo documental
               </div>
@@ -257,17 +269,19 @@ export function TRWizardPage() {
                 <h1 className='text-3xl font-semibold tracking-tight text-balance'>
                   Criação de TR com modelos oficiais
                 </h1>
-                <p className='max-w-2xl text-muted-foreground text-pretty'>
-                  O fluxo agora acompanha a lógica dos documentos reais de FIEPE,
-                  IEL e SESI, com etapas estruturadas, matriz de lotes, revisão final
-                  e checklist por obrigatoriedade.
+                <p className='max-w-2xl text-pretty text-muted-foreground'>
+                  O fluxo agora acompanha a lógica dos documentos reais de
+                  FIEPE, IEL e SESI, com etapas estruturadas, matriz de lotes,
+                  revisão final e checklist por obrigatoriedade.
                 </p>
               </div>
             </div>
 
             <Card className='w-full max-w-sm rounded-[24px] border-black/5 bg-background/90 shadow-none dark:border-white/10'>
               <CardHeader className='pb-3'>
-                <CardTitle className='text-base'>Prontidão do documento</CardTitle>
+                <CardTitle className='text-base'>
+                  Prontidão do documento
+                </CardTitle>
                 <CardDescription>
                   O progresso é recalculado pelo modelo oficial selecionado.
                 </CardDescription>
@@ -275,9 +289,12 @@ export function TRWizardPage() {
               <CardContent className='space-y-4'>
                 <div className='space-y-2'>
                   <div className='flex items-center justify-between text-sm'>
-                    <span className='text-muted-foreground'>Obrigatórios completos</span>
+                    <span className='text-muted-foreground'>
+                      Obrigatórios completos
+                    </span>
                     <span className='font-semibold tabular-nums'>
-                      {reviewState.completedRequired}/{reviewState.totalRequired}
+                      {reviewState.completedRequired}/
+                      {reviewState.totalRequired}
                     </span>
                   </div>
                   <div className='h-2 overflow-hidden rounded-full bg-muted'>
@@ -289,9 +306,15 @@ export function TRWizardPage() {
                 </div>
 
                 <div className='grid gap-3 rounded-2xl bg-muted/30 p-4 text-sm'>
-                  <SummaryLine label='Instituição' value={context.institution} />
+                  <SummaryLine
+                    label='Instituição'
+                    value={context.institution}
+                  />
                   <SummaryLine label='Modelo' value={template.label} />
-                  <SummaryLine label='Etapa atual' value={currentSection.title} />
+                  <SummaryLine
+                    label='Etapa atual'
+                    value={currentSection.title}
+                  />
                   <SummaryLine
                     label='Status'
                     value={
@@ -320,7 +343,7 @@ export function TRWizardPage() {
         />
 
         <div className='grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]'>
-          <Card className='surface-card rounded-[28px] border-black/5 dark:border-white/10'>
+          <Card className='rounded-[28px] border-black/5 surface-card dark:border-white/10'>
             <CardHeader>
               <div className='flex flex-wrap items-start justify-between gap-3'>
                 <div className='space-y-2'>
@@ -330,13 +353,18 @@ export function TRWizardPage() {
                       Etapa {currentStep + 1} de {wizardSteps.length}
                     </Badge>
                     {reviewState.pendingLabels.length ? (
-                      <Badge variant='outline' className='border-amber-300 text-amber-700 dark:border-amber-800 dark:text-amber-200'>
+                      <Badge
+                        variant='outline'
+                        className='border-amber-300 text-amber-700 dark:border-amber-800 dark:text-amber-200'
+                      >
                         {reviewState.pendingLabels.length} pendência(s)
                       </Badge>
                     ) : null}
                   </div>
                   <CardTitle>{currentSection.title}</CardTitle>
-                  <CardDescription>{currentSection.description}</CardDescription>
+                  <CardDescription>
+                    {currentSection.description}
+                  </CardDescription>
                 </div>
 
                 {currentSection.kind === 'review' ? (
@@ -382,7 +410,9 @@ export function TRWizardPage() {
               ) : currentSection.kind === 'deliveries' ? (
                 <DeliveriesSection
                   deliveries={
-                    (documentData.deliveries as TRDeliveryLocation[] | undefined) ?? []
+                    (documentData.deliveries as
+                      | TRDeliveryLocation[]
+                      | undefined) ?? []
                   }
                   errors={errors}
                   onAddDelivery={addDeliveryLocation}
@@ -408,8 +438,14 @@ export function TRWizardPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className='space-y-4 text-sm'>
-                <SummaryLine label='Referência' value={context.referenceCode || 'Não informada'} />
-                <SummaryLine label='Título' value={context.title || 'Sem título'} />
+                <SummaryLine
+                  label='Referência'
+                  value={context.referenceCode || 'Não informada'}
+                />
+                <SummaryLine
+                  label='Título'
+                  value={context.title || 'Sem título'}
+                />
                 <SummaryLine
                   label='Unidade responsável'
                   value={context.responsibleUnit || 'Não informada'}
@@ -418,7 +454,10 @@ export function TRWizardPage() {
                 <Separator />
                 <div className='rounded-2xl bg-muted/30 p-4'>
                   <div className='flex items-center gap-2 font-medium'>
-                    <FileText aria-hidden='true' className='size-4 text-primary' />
+                    <FileText
+                      aria-hidden='true'
+                      className='size-4 text-primary'
+                    />
                     O que vem agora
                   </div>
                   <p className='mt-2 text-muted-foreground'>
@@ -443,7 +482,8 @@ export function TRWizardPage() {
               <CardHeader>
                 <CardTitle>Checklist de prontidão</CardTitle>
                 <CardDescription>
-                  O documento só fica pronto quando o modelo oficial estiver consistente.
+                  O documento só fica pronto quando o modelo oficial estiver
+                  consistente.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -464,8 +504,12 @@ export function TRWizardPage() {
                       ))
                     ) : (
                       <div className='flex items-start gap-2 rounded-xl bg-emerald-50 px-3 py-2 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-200'>
-                        <CheckCircle2 aria-hidden='true' className='mt-0.5 size-4 shrink-0' />
-                        Todos os requisitos obrigatórios do modelo estão preenchidos.
+                        <CheckCircle2
+                          aria-hidden='true'
+                          className='mt-0.5 size-4 shrink-0'
+                        />
+                        Todos os requisitos obrigatórios do modelo estão
+                        preenchidos.
                       </div>
                     )}
                   </div>
@@ -510,13 +554,19 @@ export function TRWizardPage() {
                     type='button'
                     className='rounded-xl'
                     onClick={handleSubmit}
-                    disabled={!reviewState.isReady || submission.status === 'submitting'}
+                    disabled={
+                      !reviewState.isReady || submission.status === 'submitting'
+                    }
                   >
                     <CheckCircle2 data-icon='inline-start' />
                     Enviar para revisão
                   </Button>
                 ) : (
-                  <Button type='button' className='rounded-xl' onClick={handleAdvance}>
+                  <Button
+                    type='button'
+                    className='rounded-xl'
+                    onClick={handleAdvance}
+                  >
                     Próxima etapa
                     <ArrowRight data-icon='inline-end' />
                   </Button>
@@ -537,13 +587,18 @@ export function TRWizardPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Trocar instituição ou modelo?</AlertDialogTitle>
             <AlertDialogDescription>
-              O wizard preserva apenas os campos compatíveis entre os modelos. Os
-              dados específicos do modelo atual podem ser limpos nessa troca.
+              O wizard preserva apenas os campos compatíveis entre os modelos.
+              Os dados específicos do modelo atual podem ser limpos nessa troca.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className='rounded-xl'>Continuar editando</AlertDialogCancel>
-            <AlertDialogAction className='rounded-xl' onClick={applyPendingTemplateChange}>
+            <AlertDialogCancel className='rounded-xl'>
+              Continuar editando
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className='rounded-xl'
+              onClick={applyPendingTemplateChange}
+            >
               Trocar modelo
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -575,7 +630,11 @@ function SetupStep({
   onInstitutionChange: (value: string) => void
   onTemplateChange: (value: string) => void
   onContextChange: (
-    values: Partial<{ title: string; responsibleUnit: string; referenceCode: string }>
+    values: Partial<{
+      title: string
+      responsibleUnit: string
+      referenceCode: string
+    }>
   ) => void
 }) {
   return (
@@ -596,8 +655,15 @@ function SetupStep({
             </CardDescription>
           </CardHeader>
           <CardContent className='grid gap-5 md:grid-cols-2'>
-            <FieldBlock label='Instituição' htmlFor='institution' error={errors.institution}>
-              <Select value={context.institution} onValueChange={onInstitutionChange}>
+            <FieldBlock
+              label='Instituição'
+              htmlFor='institution'
+              error={errors.institution}
+            >
+              <Select
+                value={context.institution}
+                onValueChange={onInstitutionChange}
+              >
                 <SelectTrigger
                   id='institution'
                   name='institution'
@@ -616,8 +682,15 @@ function SetupStep({
               </Select>
             </FieldBlock>
 
-            <FieldBlock label='Modelo oficial' htmlFor='templateType' error={errors.templateType}>
-              <Select value={context.templateType} onValueChange={onTemplateChange}>
+            <FieldBlock
+              label='Modelo oficial'
+              htmlFor='templateType'
+              error={errors.templateType}
+            >
+              <Select
+                value={context.templateType}
+                onValueChange={onTemplateChange}
+              >
                 <SelectTrigger
                   id='templateType'
                   name='templateType'
@@ -646,7 +719,11 @@ function SetupStep({
             </CardDescription>
           </CardHeader>
           <CardContent className='grid gap-5'>
-            <FieldBlock label='Título da TR' htmlFor='title' error={errors.title}>
+            <FieldBlock
+              label='Título da TR'
+              htmlFor='title'
+              error={errors.title}
+            >
               <Input
                 id='title'
                 name='title'
@@ -654,7 +731,9 @@ function SetupStep({
                 autoComplete='off'
                 placeholder='Ex.: Consultoria para internacionalização industrial'
                 value={context.title}
-                onChange={(event) => onContextChange({ title: event.target.value })}
+                onChange={(event) =>
+                  onContextChange({ title: event.target.value })
+                }
                 className='rounded-xl'
               />
             </FieldBlock>
@@ -666,7 +745,9 @@ function SetupStep({
             >
               <Select
                 value={context.responsibleUnit}
-                onValueChange={(value) => onContextChange({ responsibleUnit: value })}
+                onValueChange={(value) =>
+                  onContextChange({ responsibleUnit: value })
+                }
               >
                 <SelectTrigger
                   id='responsibleUnit'
@@ -757,7 +838,10 @@ function LotsSection({
   errors: StepErrors
   onAddLot: () => void
   onRemoveLot: (lotId: string) => void
-  onUpdateLot: (lotId: string, values: Partial<Omit<TRLot, 'items' | 'id'>>) => void
+  onUpdateLot: (
+    lotId: string,
+    values: Partial<Omit<TRLot, 'items' | 'id'>>
+  ) => void
   onAddLotItem: (lotId: string) => void
   onUpdateLotItem: (
     lotId: string,
@@ -772,13 +856,17 @@ function LotsSection({
         <ClipboardList aria-hidden='true' className='size-4' />
         <AlertTitle>Matriz principal do SESI</AlertTitle>
         <AlertDescription>
-          Cada linha deve reproduzir a lógica do TR oficial: lote, unidade/endereço,
-          item, especificação, unidade, quantidade total e entrega.
+          Cada linha deve reproduzir a lógica do TR oficial: lote,
+          unidade/endereço, item, especificação, unidade, quantidade total e
+          entrega.
         </AlertDescription>
       </Alert>
 
       {lots.map((lot, index) => (
-        <Card key={lot.id} className='rounded-[24px] border-black/5 dark:border-white/10'>
+        <Card
+          key={lot.id}
+          className='rounded-[24px] border-black/5 dark:border-white/10'
+        >
           <CardHeader>
             <div className='flex flex-wrap items-center justify-between gap-3'>
               <div>
@@ -787,7 +875,11 @@ function LotsSection({
                   Identifique o lote e estruture os itens vinculados a ele.
                 </CardDescription>
               </div>
-              <Button type='button' variant='outline' onClick={() => onRemoveLot(lot.id)}>
+              <Button
+                type='button'
+                variant='outline'
+                onClick={() => onRemoveLot(lot.id)}
+              >
                 <Trash2 data-icon='inline-start' />
                 Remover lote
               </Button>
@@ -807,7 +899,9 @@ function LotsSection({
                   autoComplete='off'
                   placeholder='Ex.: 01'
                   value={lot.number}
-                  onChange={(event) => onUpdateLot(lot.id, { number: event.target.value })}
+                  onChange={(event) =>
+                    onUpdateLot(lot.id, { number: event.target.value })
+                  }
                   className='rounded-xl'
                 />
               </FieldBlock>
@@ -823,7 +917,9 @@ function LotsSection({
                   autoComplete='off'
                   placeholder='Ex.: Armário expositor'
                   value={lot.name}
-                  onChange={(event) => onUpdateLot(lot.id, { name: event.target.value })}
+                  onChange={(event) =>
+                    onUpdateLot(lot.id, { name: event.target.value })
+                  }
                   className='rounded-xl'
                 />
               </FieldBlock>
@@ -833,10 +929,16 @@ function LotsSection({
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className='min-w-[200px]'>Unidade/Endereço</TableHead>
+                    <TableHead className='min-w-[200px]'>
+                      Unidade/Endereço
+                    </TableHead>
                     <TableHead className='min-w-[120px]'>Item</TableHead>
-                    <TableHead className='min-w-[260px]'>Especificação resumida</TableHead>
-                    <TableHead className='min-w-[150px]'>Unidade de medida</TableHead>
+                    <TableHead className='min-w-[260px]'>
+                      Especificação resumida
+                    </TableHead>
+                    <TableHead className='min-w-[150px]'>
+                      Unidade de medida
+                    </TableHead>
                     <TableHead className='min-w-[120px]'>Qtd. total</TableHead>
                     <TableHead className='min-w-[180px]'>Entrega</TableHead>
                     <TableHead className='w-[120px]'>Ação</TableHead>
@@ -922,7 +1024,11 @@ function LotsSection({
                         />
                         {errors[`lot-${lot.id}-item-${item.id}-unitMeasure`] ? (
                           <p className='mt-2 text-sm text-destructive'>
-                            {errors[`lot-${lot.id}-item-${item.id}-unitMeasure`]}
+                            {
+                              errors[
+                                `lot-${lot.id}-item-${item.id}-unitMeasure`
+                              ]
+                            }
                           </p>
                         ) : null}
                       </TableCell>
@@ -983,7 +1089,11 @@ function LotsSection({
               </Table>
             </div>
 
-            <Button type='button' variant='outline' onClick={() => onAddLotItem(lot.id)}>
+            <Button
+              type='button'
+              variant='outline'
+              onClick={() => onAddLotItem(lot.id)}
+            >
               <Plus data-icon='inline-start' />
               Adicionar item ao lote
             </Button>
@@ -1021,19 +1131,25 @@ function DeliveriesSection({
         <FileText aria-hidden='true' className='size-4' />
         <AlertTitle>Tabela auxiliar de instituições</AlertTitle>
         <AlertDescription>
-          Cadastre as unidades com CNPJ e endereço oficial. Essa tabela complementa
-          a matriz de lotes, sem substituí-la.
+          Cadastre as unidades com CNPJ e endereço oficial. Essa tabela
+          complementa a matriz de lotes, sem substituí-la.
         </AlertDescription>
       </Alert>
 
       {deliveries.map((delivery, index) => (
-        <Card key={delivery.id} className='rounded-[24px] border-black/5 dark:border-white/10'>
+        <Card
+          key={delivery.id}
+          className='rounded-[24px] border-black/5 dark:border-white/10'
+        >
           <CardHeader>
             <div className='flex flex-wrap items-center justify-between gap-3'>
               <div>
-                <CardTitle className='text-base'>Instituição/Unidade {index + 1}</CardTitle>
+                <CardTitle className='text-base'>
+                  Instituição/Unidade {index + 1}
+                </CardTitle>
                 <CardDescription>
-                  Informe a unidade atendida, CNPJ e endereço de entrega/fornecimento.
+                  Informe a unidade atendida, CNPJ e endereço de
+                  entrega/fornecimento.
                 </CardDescription>
               </div>
               <Button
@@ -1142,7 +1258,8 @@ function ReviewSection({
           <CheckCircle2 aria-hidden='true' className='size-4' />
           <AlertTitle>Documento pronto para revisão</AlertTitle>
           <AlertDescription>
-            Todos os requisitos obrigatórios do modelo oficial foram preenchidos.
+            Todos os requisitos obrigatórios do modelo oficial foram
+            preenchidos.
           </AlertDescription>
         </Alert>
       ) : (
@@ -1198,7 +1315,9 @@ function FieldRenderer({
             data-field-id={field.id}
             className='rounded-xl'
           >
-            <SelectValue placeholder={field.placeholder ?? 'Selecione uma opção'} />
+            <SelectValue
+              placeholder={field.placeholder ?? 'Selecione uma opção'}
+            />
           </SelectTrigger>
           <SelectContent>
             {field.options?.map((option) => (
@@ -1259,7 +1378,9 @@ function FieldBlock({
         {label}
       </Label>
       {children}
-      {description ? <p className='text-xs text-muted-foreground'>{description}</p> : null}
+      {description ? (
+        <p className='text-xs text-muted-foreground'>{description}</p>
+      ) : null}
       {error ? <p className='text-sm text-destructive'>{error}</p> : null}
     </div>
   )
@@ -1267,11 +1388,11 @@ function FieldBlock({
 
 function SummaryLine({ label, value }: { label: string; value: string }) {
   return (
-    <div className='space-y-1 min-w-0'>
+    <div className='min-w-0 space-y-1'>
       <div className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
         {label}
       </div>
-      <div className='break-words font-medium'>{value}</div>
+      <div className='font-medium break-words'>{value}</div>
     </div>
   )
 }
@@ -1291,8 +1412,10 @@ function validateCurrentStep(
   const nextErrors: StepErrors = {}
 
   if (section.id === 'setup') {
-    if (!context.institution) nextErrors.institution = 'Selecione a instituição.'
-    if (!context.templateType) nextErrors.templateType = 'Selecione o tipo de TR.'
+    if (!context.institution)
+      nextErrors.institution = 'Selecione a instituição.'
+    if (!context.templateType)
+      nextErrors.templateType = 'Selecione o tipo de TR.'
     if (!context.title.trim()) nextErrors.title = 'Informe o título da TR.'
     if (!context.responsibleUnit.trim()) {
       nextErrors.responsibleUnit = 'Informe a unidade responsável.'
@@ -1309,7 +1432,10 @@ function validateCurrentStep(
         return
       }
 
-      if (field.input === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      if (
+        field.input === 'email' &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+      ) {
         nextErrors[field.id] = 'Informe um e-mail válido.'
       }
     })
@@ -1320,8 +1446,10 @@ function validateCurrentStep(
     if (!lots.length) nextErrors.lots = 'Adicione ao menos um lote.'
 
     lots.forEach((lot) => {
-      if (!lot.number.trim()) nextErrors[`lot-${lot.id}-number`] = 'Informe o número do lote.'
-      if (!lot.name.trim()) nextErrors[`lot-${lot.id}-name`] = 'Informe o nome do lote.'
+      if (!lot.number.trim())
+        nextErrors[`lot-${lot.id}-number`] = 'Informe o número do lote.'
+      if (!lot.name.trim())
+        nextErrors[`lot-${lot.id}-name`] = 'Informe o nome do lote.'
 
       lot.items.forEach((item) => {
         if (!item.location.trim()) {
@@ -1329,27 +1457,32 @@ function validateCurrentStep(
             'Informe a unidade ou o endereço.'
         }
         if (!item.itemCode.trim()) {
-          nextErrors[`lot-${lot.id}-item-${item.id}-itemCode`] = 'Informe o item.'
+          nextErrors[`lot-${lot.id}-item-${item.id}-itemCode`] =
+            'Informe o item.'
         }
         if (!item.summary.trim()) {
-          nextErrors[`lot-${lot.id}-item-${item.id}-summary`] = 'Descreva o item.'
+          nextErrors[`lot-${lot.id}-item-${item.id}-summary`] =
+            'Descreva o item.'
         }
         if (!item.unitMeasure.trim()) {
           nextErrors[`lot-${lot.id}-item-${item.id}-unitMeasure`] =
             'Informe a unidade de medida.'
         }
         if (!item.quantity.trim()) {
-          nextErrors[`lot-${lot.id}-item-${item.id}-quantity`] = 'Informe a quantidade total.'
+          nextErrors[`lot-${lot.id}-item-${item.id}-quantity`] =
+            'Informe a quantidade total.'
         }
         if (!item.delivery.trim()) {
-          nextErrors[`lot-${lot.id}-item-${item.id}-delivery`] = 'Informe a entrega.'
+          nextErrors[`lot-${lot.id}-item-${item.id}-delivery`] =
+            'Informe a entrega.'
         }
       })
     })
   }
 
   if (section.kind === 'deliveries') {
-    const deliveries = (documentData.deliveries as TRDeliveryLocation[] | undefined) ?? []
+    const deliveries =
+      (documentData.deliveries as TRDeliveryLocation[] | undefined) ?? []
     if (!deliveries.length) {
       nextErrors.deliveries = 'Adicione ao menos uma instituição/unidade.'
     }
@@ -1372,6 +1505,8 @@ function validateCurrentStep(
 }
 
 function focusField(fieldId: string) {
-  const element = document.querySelector<HTMLElement>(`[data-field-id="${fieldId}"]`)
+  const element = document.querySelector<HTMLElement>(
+    `[data-field-id="${fieldId}"]`
+  )
   element?.focus()
 }

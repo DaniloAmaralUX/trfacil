@@ -1,14 +1,12 @@
 import { Link } from '@tanstack/react-router'
 import { ArrowLeft, FilePenLine, ScanSearch, Send } from 'lucide-react'
 import { toast } from 'sonner'
-import { ConfigDrawer } from '@/components/config-drawer'
-import { Header } from '@/components/layout/header'
-import { Main } from '@/components/layout/main'
-import { ProfileDropdown } from '@/components/profile-dropdown'
-import { ThemeSwitch } from '@/components/theme-switch'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Header } from '@/shared/layout/header'
+import { HeaderActions } from '@/shared/layout/header-actions'
+import { Main } from '@/shared/layout/main'
+import { Badge } from '@/shared/ui/badge'
+import { Button } from '@/shared/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
 import { trStatusBadgeClass, trStatusLabels } from '@/features/tr/data/data'
 import { getTRDocument } from '@/features/tr/data/tr-document'
 import { TRReviewActions } from '@/features/tr/review/components/tr-review-actions'
@@ -28,11 +26,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
   return (
     <>
       <Header>
-        <div className='ms-auto flex items-center space-x-4'>
-          <ThemeSwitch />
-          <ConfigDrawer />
-          <ProfileDropdown />
-        </div>
+        <HeaderActions />
       </Header>
 
       <Main className='space-y-6 pb-8'>
@@ -55,7 +49,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
                 {trStatusLabels[document.status] ?? document.status}
               </Badge>
             </div>
-            <p className='max-w-3xl text-muted-foreground text-pretty'>
+            <p className='max-w-3xl text-pretty text-muted-foreground'>
               {document.title}
             </p>
             {mode === 'edit' ? (
@@ -80,7 +74,9 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
             </Button>
             <Button
               className='rounded-xl'
-              onClick={() => toast.success(`${document.id} enviado para revisão`)}
+              onClick={() =>
+                toast.success(`${document.id} enviado para revisão`)
+              }
             >
               <Send className='size-4' />
               Enviar para revisão
@@ -89,7 +85,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
         </section>
 
         <div className='grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]'>
-          <Card className='surface-card rounded-[24px] border-black/5 dark:border-white/10'>
+          <Card className='rounded-[24px] border-black/5 surface-card dark:border-white/10'>
             <CardHeader>
               <CardTitle>Metadados</CardTitle>
             </CardHeader>
@@ -123,7 +119,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
         {isReviewState && (
           <div className='grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]'>
             <TRReviewComments comments={document.comments} />
-            <Card className='surface-card rounded-[24px] border-black/5 dark:border-white/10'>
+            <Card className='rounded-[24px] border-black/5 surface-card dark:border-white/10'>
               <CardHeader>
                 <CardTitle>Ações de revisão</CardTitle>
               </CardHeader>
@@ -141,7 +137,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <div className='space-y-1'>
-      <div className='text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
+      <div className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
         {label}
       </div>
       <div className='font-medium'>{value}</div>

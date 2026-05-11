@@ -1,6 +1,6 @@
 import { Check, CircleAlert, CircleDot } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import { cn } from '@/shared/lib/utils'
+import { Button } from '@/shared/ui/button'
 import { type TRSectionDefinition } from '@/features/tr/data/templates'
 
 type TRStepperProps = {
@@ -22,7 +22,10 @@ export function TRStepper({
         const isActive = index === currentStep
         const isCompleted = index < currentStep
         const hasAttention =
-          !isCompleted && !isActive && step.kind === 'review' && pendingLabels.length > 0
+          !isCompleted &&
+          !isActive &&
+          step.kind === 'review' &&
+          pendingLabels.length > 0
 
         return (
           <li key={step.id}>
@@ -69,7 +72,7 @@ export function TRStepper({
                   )}
                 </div>
                 <div className='min-w-0 space-y-1'>
-                  <div className='font-medium leading-none'>{step.title}</div>
+                  <div className='leading-none font-medium'>{step.title}</div>
                   <p className='line-clamp-2 text-xs text-muted-foreground'>
                     {step.description}
                   </p>

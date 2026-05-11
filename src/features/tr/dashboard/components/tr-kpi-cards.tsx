@@ -4,7 +4,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
+} from '@/shared/ui/card'
 
 type KPIItem = {
   label: string
@@ -22,7 +22,7 @@ export function TRKpiCards({ items }: TRKpiCardsProps) {
       {items.map((item) => (
         <Card
           key={item.label}
-          className='surface-card rounded-[24px] border-black/5 dark:border-white/10'
+          className='rounded-[24px] border-black/5 surface-card dark:border-white/10'
         >
           <CardHeader className='pb-2'>
             <CardDescription>{item.label}</CardDescription>
@@ -30,7 +30,7 @@ export function TRKpiCards({ items }: TRKpiCardsProps) {
               {item.value}
             </CardTitle>
           </CardHeader>
-          <CardContent className='text-sm leading-6 text-muted-foreground text-pretty'>
+          <CardContent className='text-sm leading-6 text-pretty text-muted-foreground'>
             {item.description}
           </CardContent>
         </Card>

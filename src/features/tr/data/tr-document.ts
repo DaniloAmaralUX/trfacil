@@ -126,7 +126,8 @@ export function getTRDocument(trId?: string) {
       ...lot.items[0],
       location: 'SESI Paulista — Rua João Teixeira, 123',
       itemCode: '1',
-      summary: 'Armário expositor em MDF com portas de vidro, iluminação e montagem no local.',
+      summary:
+        'Armário expositor em MDF com portas de vidro, iluminação e montagem no local.',
       unitMeasure: 'unidade',
       quantity: '1',
       delivery: 'Entrega com instalação em até 45 dias',

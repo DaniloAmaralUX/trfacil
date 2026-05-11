@@ -12,8 +12,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { cn } from '@/lib/utils'
-import { useTableUrlState } from '@/hooks/use-table-url-state'
+import { DataTablePagination, DataTableToolbar } from '@/shared/data-table'
+import { cn } from '@/shared/lib/utils'
+import { useTableUrlState } from '@/shared/hooks/use-table-url-state'
 import {
   Table,
   TableBody,
@@ -21,12 +22,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
+} from '@/shared/ui/table'
 import { trStatuses, trUnits } from '@/features/tr/data/data'
 import { type TRItem } from '@/features/tr/data/schema'
-import { TRsEmptyState } from './trs-empty-state'
 import { trsColumns as columns } from './trs-columns'
+import { TRsEmptyState } from './trs-empty-state'
 
 const route = getRouteApi('/_authenticated/trs')
 

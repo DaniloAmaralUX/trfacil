@@ -42,7 +42,11 @@ export function TRUnitsChart({ data }: TRUnitsChartProps) {
             tickLine={false}
           />
           <Tooltip formatter={(value) => `${value ?? 0} TRs`} />
-          <Bar dataKey='records' radius={[0, 8, 8, 0]} className='fill-primary' />
+          <Bar
+            dataKey='records'
+            radius={[0, 8, 8, 0]}
+            className='fill-primary'
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

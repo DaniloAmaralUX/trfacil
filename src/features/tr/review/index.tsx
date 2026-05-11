@@ -1,13 +1,11 @@
 import { Link } from '@tanstack/react-router'
 import { ClipboardCheck, Eye } from 'lucide-react'
-import { ConfigDrawer } from '@/components/config-drawer'
-import { Header } from '@/components/layout/header'
-import { Main } from '@/components/layout/main'
-import { ProfileDropdown } from '@/components/profile-dropdown'
-import { ThemeSwitch } from '@/components/theme-switch'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Header } from '@/shared/layout/header'
+import { HeaderActions } from '@/shared/layout/header-actions'
+import { Main } from '@/shared/layout/main'
+import { Badge } from '@/shared/ui/badge'
+import { Button } from '@/shared/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
 import { trStatusBadgeClass, trStatusLabels } from '@/features/tr/data/data'
 import { trs } from '@/features/tr/data/trs'
 
@@ -19,35 +17,40 @@ export function TRReviewPage() {
   return (
     <>
       <Header>
-        <div className='ms-auto flex items-center space-x-4'>
-          <ThemeSwitch />
-          <ConfigDrawer />
-          <ProfileDropdown />
-        </div>
+        <HeaderActions />
       </Header>
 
       <Main className='space-y-6 pb-8'>
         <section className='space-y-2'>
-          <div className='inline-flex items-center gap-2 rounded-full border border-black/5 bg-muted/40 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-primary dark:border-white/10'>
+          <div className='inline-flex items-center gap-2 rounded-full border border-black/5 bg-muted/40 px-3 py-1 text-xs font-semibold tracking-[0.14em] text-primary uppercase dark:border-white/10'>
             Fila de aprovação
           </div>
           <h1 className='text-3xl font-semibold tracking-tight text-balance'>
             Documentos aguardando decisão
           </h1>
-          <p className='max-w-3xl text-muted-foreground text-pretty'>
-            Revise os TRs em andamento, leia o documento consolidado e decida entre aprovar ou solicitar ajustes.
+          <p className='max-w-3xl text-pretty text-muted-foreground'>
+            Revise os TRs em andamento, leia o documento consolidado e decida
+            entre aprovar ou solicitar ajustes.
           </p>
         </section>
 
         <section className='grid gap-3 md:grid-cols-3'>
-          <StatusCard label='Pendentes agora' value={String(reviewItems.length)} />
+          <StatusCard
+            label='Pendentes agora'
+            value={String(reviewItems.length)}
+          />
           <StatusCard
             label='Em revisão'
-            value={String(reviewItems.filter((item) => item.status === 'in_review').length)}
+            value={String(
+              reviewItems.filter((item) => item.status === 'in_review').length
+            )}
           />
           <StatusCard
             label='Com ajustes solicitados'
-            value={String(reviewItems.filter((item) => item.status === 'changes_requested').length)}
+            value={String(
+              reviewItems.filter((item) => item.status === 'changes_requested')
+                .length
+            )}
           />
         </section>
 
@@ -55,11 +58,13 @@ export function TRReviewPage() {
           {reviewItems.map((item) => (
             <Card
               key={item.id}
-              className='surface-card rounded-[24px] border-black/5 dark:border-white/10'
+              className='rounded-[24px] border-black/5 surface-card dark:border-white/10'
             >
               <CardHeader className='space-y-3'>
                 <div className='flex items-center justify-between gap-3'>
-                  <CardTitle className='text-lg font-semibold'>{item.id}</CardTitle>
+                  <CardTitle className='text-lg font-semibold'>
+                    {item.id}
+                  </CardTitle>
                   <Badge
                     variant='outline'
                     className={trStatusBadgeClass[item.status] ?? ''}
@@ -67,7 +72,9 @@ export function TRReviewPage() {
                     {trStatusLabels[item.status] ?? item.status}
                   </Badge>
                 </div>
-                <p className='text-sm font-medium text-foreground'>{item.title}</p>
+                <p className='text-sm font-medium text-foreground'>
+                  {item.title}
+                </p>
               </CardHeader>
               <CardContent className='space-y-4 text-sm'>
                 <div className='grid gap-3 sm:grid-cols-2'>
@@ -81,7 +88,7 @@ export function TRReviewPage() {
                     )}
                   />
                 </div>
-                <p className='leading-6 text-muted-foreground text-pretty'>
+                <p className='leading-6 text-pretty text-muted-foreground'>
                   {item.summary}
                 </p>
                 <Button asChild className='w-full rounded-xl'>
@@ -116,7 +123,7 @@ export function TRReviewPage() {
 function Info({ label, value }: { label: string; value: string }) {
   return (
     <div className='space-y-1'>
-      <div className='text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
+      <div className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
         {label}
       </div>
       <div className='font-medium'>{value}</div>
@@ -128,7 +135,7 @@ function StatusCard({ label, value }: { label: string; value: string }) {
   return (
     <Card className='rounded-[24px] border-black/5 dark:border-white/10'>
       <CardContent className='space-y-1 px-5 py-4'>
-        <div className='text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
+        <div className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
           {label}
         </div>
         <div className='text-2xl font-semibold tabular-nums'>{value}</div>

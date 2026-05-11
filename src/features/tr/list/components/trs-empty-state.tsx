@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { FileSearch } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/shared/ui/button'
+import { Card, CardContent } from '@/shared/ui/card'
 
 type TRsEmptyStateProps = {
   filtered?: boolean

@@ -1,6 +1,6 @@
 import { CheckCircle2, RotateCcw } from 'lucide-react'
 import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/shared/ui/button'
 
 export function TRReviewActions() {
   return (

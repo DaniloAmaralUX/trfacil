@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
 
 type ReviewComment = {
   author: string
@@ -12,7 +12,7 @@ type TRReviewCommentsProps = {
 
 export function TRReviewComments({ comments }: TRReviewCommentsProps) {
   return (
-    <Card className='surface-card rounded-[24px] border-black/5 dark:border-white/10'>
+    <Card className='rounded-[24px] border-black/5 surface-card dark:border-white/10'>
       <CardHeader>
         <CardTitle>Comentários de revisão</CardTitle>
       </CardHeader>
@@ -28,7 +28,7 @@ export function TRReviewComments({ comments }: TRReviewCommentsProps) {
                 {comment.date}
               </span>
             </div>
-            <p className='mt-2 text-sm leading-6 text-muted-foreground text-pretty'>
+            <p className='mt-2 text-sm leading-6 text-pretty text-muted-foreground'>
               {comment.message}
             </p>
           </div>

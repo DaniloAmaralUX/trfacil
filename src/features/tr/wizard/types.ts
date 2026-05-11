@@ -33,7 +33,9 @@ export type TRWizardData = {
   isDirty: boolean
 }
 
-export function getCurrentTemplate(context: TRWizardContext): TRTemplateDefinition {
+export function getCurrentTemplate(
+  context: TRWizardContext
+): TRTemplateDefinition {
   return getTemplateDefinition(context.institution, context.templateType)
 }
 

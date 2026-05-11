@@ -1,16 +1,16 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { type Row } from '@tanstack/react-table'
 import { Link } from '@tanstack/react-router'
+import { type Row } from '@tanstack/react-table'
 import { Copy, FileSearch, Send } from 'lucide-react'
 import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/shared/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@/shared/ui/dropdown-menu'
 import { type TRItem } from '@/features/tr/data/schema'
 
 type TRsRowActionsProps<TData> = {
@@ -40,11 +40,17 @@ export function TRsRowActions<TData>({ row }: TRsRowActionsProps<TData>) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link to='/tr/$trId' params={{ trId: tr.id }} search={{ mode: 'edit' }}>
+          <Link
+            to='/tr/$trId'
+            params={{ trId: tr.id }}
+            search={{ mode: 'edit' }}
+          >
             Editar
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => toast.success(`Duplicando ${tr.id}...`)}>
+        <DropdownMenuItem
+          onClick={() => toast.success(`Duplicando ${tr.id}...`)}
+        >
           <Copy className='size-4' />
           Duplicar
         </DropdownMenuItem>

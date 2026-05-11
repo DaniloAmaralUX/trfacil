@@ -1,9 +1,6 @@
-import { ConfigDrawer } from '@/components/config-drawer'
-import { Header } from '@/components/layout/header'
-import { Main } from '@/components/layout/main'
-import { ProfileDropdown } from '@/components/profile-dropdown'
-import { Search } from '@/components/search'
-import { ThemeSwitch } from '@/components/theme-switch'
+import { Header } from '@/shared/layout/header'
+import { HeaderActions } from '@/shared/layout/header-actions'
+import { Main } from '@/shared/layout/main'
 import { trs } from '@/features/tr/data/trs'
 import { TRsPrimaryButtons } from './components/trs-primary-buttons'
 import { TRsTable } from './components/trs-table'
@@ -12,12 +9,7 @@ export function TRListPage() {
   return (
     <>
       <Header fixed>
-        <Search />
-        <div className='ms-auto flex items-center space-x-4'>
-          <ThemeSwitch />
-          <ConfigDrawer />
-          <ProfileDropdown />
-        </div>
+        <HeaderActions />
       </Header>
 
       <Main className='flex flex-1 flex-col gap-4 sm:gap-6'>
@@ -25,7 +17,8 @@ export function TRListPage() {
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>TRs</h2>
             <p className='text-muted-foreground'>
-              Gerencie documentos em rascunho, revisão e aprovação com filtros rápidos.
+              Gerencie documentos em rascunho, revisão e aprovação com filtros
+              rápidos.
             </p>
           </div>
           <TRsPrimaryButtons />

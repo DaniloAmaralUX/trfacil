@@ -13,12 +13,7 @@ export const trTemplateTypes = [
 export type TRInstitution = (typeof trInstitutions)[number]
 export type TRTemplateType = (typeof trTemplateTypes)[number]
 
-export type TRFieldInputType =
-  | 'text'
-  | 'textarea'
-  | 'select'
-  | 'date'
-  | 'email'
+export type TRFieldInputType = 'text' | 'textarea' | 'select' | 'date' | 'email'
 
 export type TRFieldDefinition = {
   id: string
@@ -134,7 +129,8 @@ const institutionalFields: Record<string, TRFieldDefinition> = {
     label: 'Justificativa',
     input: 'textarea',
     required: true,
-    placeholder: 'Explique a necessidade institucional, o contexto e o resultado esperado…',
+    placeholder:
+      'Explique a necessidade institucional, o contexto e o resultado esperado…',
     autocomplete: 'off',
   },
   serviceSummary: {
@@ -142,7 +138,8 @@ const institutionalFields: Record<string, TRFieldDefinition> = {
     label: 'Descrição resumida do escopo',
     input: 'textarea',
     required: true,
-    placeholder: 'Apresente o serviço, o recorte do trabalho e a abordagem pretendida…',
+    placeholder:
+      'Apresente o serviço, o recorte do trabalho e a abordagem pretendida…',
     autocomplete: 'off',
   },
   programPeriod: {
@@ -174,7 +171,8 @@ const institutionalFields: Record<string, TRFieldDefinition> = {
     label: 'Etapas, escopo detalhado ou itens do serviço',
     input: 'textarea',
     required: true,
-    placeholder: 'Liste etapas, marcos, frentes de atuação ou especificações centrais…',
+    placeholder:
+      'Liste etapas, marcos, frentes de atuação ou especificações centrais…',
     autocomplete: 'off',
   },
   finalDeliverables: {
@@ -182,7 +180,8 @@ const institutionalFields: Record<string, TRFieldDefinition> = {
     label: 'Entregáveis finais',
     input: 'textarea',
     required: true,
-    placeholder: 'Informe produtos finais, relatórios, evidências e materiais esperados…',
+    placeholder:
+      'Informe produtos finais, relatórios, evidências e materiais esperados…',
     autocomplete: 'off',
   },
   deliveryLocation: {
@@ -190,7 +189,8 @@ const institutionalFields: Record<string, TRFieldDefinition> = {
     label: 'Locais de entrega dos bens ou realização dos serviços',
     input: 'textarea',
     required: true,
-    placeholder: 'Detalhe unidades, formato de atendimento, endereços e restrições logísticas…',
+    placeholder:
+      'Detalhe unidades, formato de atendimento, endereços e restrições logísticas…',
     autocomplete: 'off',
   },
   monitoringArea: {
@@ -223,7 +223,8 @@ const institutionalFields: Record<string, TRFieldDefinition> = {
     label: 'Observações de acompanhamento',
     input: 'textarea',
     required: false,
-    placeholder: 'Informe ritos, evidências de aceite, checkpoints e observações adicionais…',
+    placeholder:
+      'Informe ritos, evidências de aceite, checkpoints e observações adicionais…',
     autocomplete: 'off',
   },
   hiringRequirements: {
@@ -231,7 +232,8 @@ const institutionalFields: Record<string, TRFieldDefinition> = {
     label: 'Requisitos para contratação',
     input: 'textarea',
     required: true,
-    placeholder: 'Liste experiência exigida, requisitos técnicos, documentos e condicionantes…',
+    placeholder:
+      'Liste experiência exigida, requisitos técnicos, documentos e condicionantes…',
     autocomplete: 'off',
   },
   paymentMilestones: {
@@ -239,7 +241,8 @@ const institutionalFields: Record<string, TRFieldDefinition> = {
     label: 'Forma de pagamento',
     input: 'textarea',
     required: true,
-    placeholder: 'Defina medições, marcos de aceite e condições de faturamento…',
+    placeholder:
+      'Defina medições, marcos de aceite e condições de faturamento…',
     autocomplete: 'off',
   },
   invoiceGuidance: {
@@ -247,7 +250,8 @@ const institutionalFields: Record<string, TRFieldDefinition> = {
     label: 'Observações de faturamento e descrição de NF',
     input: 'textarea',
     required: true,
-    placeholder: 'Registre convênio, descrição esperada da NF e observações obrigatórias…',
+    placeholder:
+      'Registre convênio, descrição esperada da NF e observações obrigatórias…',
     autocomplete: 'off',
   },
   generalConditions: {
@@ -255,7 +259,8 @@ const institutionalFields: Record<string, TRFieldDefinition> = {
     label: 'Condições gerais',
     input: 'textarea',
     required: true,
-    placeholder: 'Inclua condições complementares, premissas operacionais e critérios de aceite…',
+    placeholder:
+      'Inclua condições complementares, premissas operacionais e critérios de aceite…',
     autocomplete: 'off',
   },
 }
@@ -266,7 +271,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Objeto',
     input: 'textarea',
     required: true,
-    placeholder: 'Defina o objeto oficial da contratação conforme o TR do SESI…',
+    placeholder:
+      'Defina o objeto oficial da contratação conforme o TR do SESI…',
     autocomplete: 'off',
   },
   objective: {
@@ -274,7 +280,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Justificativa e objetivo da contratação',
     input: 'textarea',
     required: true,
-    placeholder: 'Descreva a motivação institucional e o objetivo final pretendido…',
+    placeholder:
+      'Descreva a motivação institucional e o objetivo final pretendido…',
     autocomplete: 'off',
   },
   hiringJustification: {
@@ -282,7 +289,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Justificativa da contratação',
     input: 'textarea',
     required: true,
-    placeholder: 'Explique a necessidade concreta da contratação e os impactos esperados…',
+    placeholder:
+      'Explique a necessidade concreta da contratação e os impactos esperados…',
     autocomplete: 'off',
   },
   lotGroupingJustification: {
@@ -298,7 +306,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Especificações técnicas e entrega/fornecimento',
     input: 'textarea',
     required: true,
-    placeholder: 'Consolide requisitos técnicos, materiais, acabamentos, fornecimento e critérios centrais…',
+    placeholder:
+      'Consolide requisitos técnicos, materiais, acabamentos, fornecimento e critérios centrais…',
     autocomplete: 'off',
   },
   warrantyConditions: {
@@ -306,7 +315,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Garantia e assistência',
     input: 'textarea',
     required: true,
-    placeholder: 'Detalhe garantia, suporte, manutenção, cobertura e prazo de atendimento…',
+    placeholder:
+      'Detalhe garantia, suporte, manutenção, cobertura e prazo de atendimento…',
     autocomplete: 'off',
   },
   deliveryInstallTerm: {
@@ -314,7 +324,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Prazos de entrega e instalação',
     input: 'textarea',
     required: true,
-    placeholder: 'Defina prazo total, marcos intermediários e janelas de entrega/instalação…',
+    placeholder:
+      'Defina prazo total, marcos intermediários e janelas de entrega/instalação…',
     autocomplete: 'off',
   },
   installationWindow: {
@@ -322,7 +333,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Condições operacionais de instalação',
     input: 'textarea',
     required: true,
-    placeholder: 'Informe horário permitido, acessos, restrições, montagem e operação em campo…',
+    placeholder:
+      'Informe horário permitido, acessos, restrições, montagem e operação em campo…',
     autocomplete: 'off',
   },
   operationalNotes: {
@@ -330,7 +342,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Observações operacionais complementares',
     input: 'textarea',
     required: true,
-    placeholder: 'Registre exigências adicionais, documentos operacionais e premissas de execução…',
+    placeholder:
+      'Registre exigências adicionais, documentos operacionais e premissas de execução…',
     autocomplete: 'off',
   },
   sampleRequirement: {
@@ -338,7 +351,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Apresentação de amostra',
     input: 'textarea',
     required: true,
-    placeholder: 'Informe se há amostra, como será apresentada e qual o critério de avaliação…',
+    placeholder:
+      'Informe se há amostra, como será apresentada e qual o critério de avaliação…',
     autocomplete: 'off',
   },
   contractTerm: {
@@ -346,7 +360,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Prazos de vigência',
     input: 'textarea',
     required: true,
-    placeholder: 'Defina vigência, início previsto e prazos contratuais relevantes…',
+    placeholder:
+      'Defina vigência, início previsto e prazos contratuais relevantes…',
     autocomplete: 'off',
   },
   budgetResources: {
@@ -354,7 +369,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Recursos orçamentários',
     input: 'textarea',
     required: true,
-    placeholder: 'Descreva fonte orçamentária, centro de custo e vinculação financeira…',
+    placeholder:
+      'Descreva fonte orçamentária, centro de custo e vinculação financeira…',
     autocomplete: 'off',
   },
   proposalRequirements: {
@@ -362,7 +378,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Proposta',
     input: 'textarea',
     required: true,
-    placeholder: 'Liste o conteúdo obrigatório da proposta comercial e técnica…',
+    placeholder:
+      'Liste o conteúdo obrigatório da proposta comercial e técnica…',
     autocomplete: 'off',
   },
   qualificationRequirements: {
@@ -370,7 +387,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Requisitos de qualificação',
     input: 'textarea',
     required: true,
-    placeholder: 'Defina documentos, atestados, registros e comprovações exigidos…',
+    placeholder:
+      'Defina documentos, atestados, registros e comprovações exigidos…',
     autocomplete: 'off',
   },
   paymentConditions: {
@@ -378,7 +396,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Pagamento',
     input: 'textarea',
     required: true,
-    placeholder: 'Descreva medição, aceite, documentos e condição de pagamento…',
+    placeholder:
+      'Descreva medição, aceite, documentos e condição de pagamento…',
     autocomplete: 'off',
   },
   contractingPartyObligations: {
@@ -386,7 +405,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Obrigações do contratante',
     input: 'textarea',
     required: true,
-    placeholder: 'Registre deveres da instituição contratante ao longo da execução…',
+    placeholder:
+      'Registre deveres da instituição contratante ao longo da execução…',
     autocomplete: 'off',
   },
   contractorObligations: {
@@ -394,7 +414,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Obrigações da contratada',
     input: 'textarea',
     required: true,
-    placeholder: 'Liste responsabilidades da contratada, equipe, documentação e entrega…',
+    placeholder:
+      'Liste responsabilidades da contratada, equipe, documentação e entrega…',
     autocomplete: 'off',
   },
   contractGovernance: {
@@ -402,7 +423,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Gestão e fiscalização do contrato',
     input: 'textarea',
     required: true,
-    placeholder: 'Defina gestor, fiscalização, registros de acompanhamento e rito de aceite…',
+    placeholder:
+      'Defina gestor, fiscalização, registros de acompanhamento e rito de aceite…',
     autocomplete: 'off',
   },
   penalties: {
@@ -410,7 +432,8 @@ const sesiFields: Record<string, TRFieldDefinition> = {
     label: 'Penalidade',
     input: 'textarea',
     required: true,
-    placeholder: 'Descreva penalidades, medidas de correção e consequências por descumprimento…',
+    placeholder:
+      'Descreva penalidades, medidas de correção e consequências por descumprimento…',
     autocomplete: 'off',
   },
 }
@@ -432,21 +455,24 @@ function createInstitutionalTemplate(
       {
         id: 'object',
         title: '1. Objeto',
-        description: 'Defina o objeto da contratação com a redação central do TR.',
+        description:
+          'Defina o objeto da contratação com a redação central do TR.',
         kind: 'fields',
         fieldIds: ['object'],
       },
       {
         id: 'justification',
         title: '2. Justificativa',
-        description: 'Contextualize a demanda, o problema e a razão da contratação.',
+        description:
+          'Contextualize a demanda, o problema e a razão da contratação.',
         kind: 'fields',
         fieldIds: ['justification'],
       },
       {
         id: 'specifications',
         title: '3. Especificações dos Bens ou Serviços',
-        description: 'Estruture escopo, período, modalidade, carga horária, etapas e entregáveis.',
+        description:
+          'Estruture escopo, período, modalidade, carga horária, etapas e entregáveis.',
         kind: 'fields',
         fieldIds: [
           'serviceSummary',
@@ -460,14 +486,16 @@ function createInstitutionalTemplate(
       {
         id: 'delivery-location',
         title: '4. Locais de Entrega ou Realização',
-        description: 'Informe as unidades, endereços, formato de execução e logística.',
+        description:
+          'Informe as unidades, endereços, formato de execução e logística.',
         kind: 'fields',
         fieldIds: ['deliveryLocation'],
       },
       {
         id: 'monitoring',
         title: '5. Acompanhamento da Execução',
-        description: 'Defina responsável, área, contato e observações do acompanhamento.',
+        description:
+          'Defina responsável, área, contato e observações do acompanhamento.',
         kind: 'fields',
         fieldIds: [
           'monitoringArea',
@@ -479,21 +507,24 @@ function createInstitutionalTemplate(
       {
         id: 'requirements',
         title: '6. Requisitos para Contratação',
-        description: 'Registre exigências técnicas, experiência, documentação e condicionantes.',
+        description:
+          'Registre exigências técnicas, experiência, documentação e condicionantes.',
         kind: 'fields',
         fieldIds: ['hiringRequirements'],
       },
       {
         id: 'payment',
         title: '7. Forma de Pagamento & Condições Gerais',
-        description: 'Estruture marcos de pagamento, faturamento e condições complementares.',
+        description:
+          'Estruture marcos de pagamento, faturamento e condições complementares.',
         kind: 'fields',
         fieldIds: ['paymentMilestones', 'invoiceGuidance', 'generalConditions'],
       },
       {
         id: 'review',
         title: 'Revisão final',
-        description: 'Valide a prévia consolidada antes de encaminhar o documento.',
+        description:
+          'Valide a prévia consolidada antes de encaminhar o documento.',
         kind: 'review',
       },
     ],
@@ -549,21 +580,28 @@ export const trTemplateDefinitions: TRTemplateDefinition[] = [
       {
         id: 'object',
         title: '1. Do Objeto',
-        description: 'Defina o objeto oficial da contratação antes dos demais fundamentos.',
+        description:
+          'Defina o objeto oficial da contratação antes dos demais fundamentos.',
         kind: 'fields',
         fieldIds: ['object'],
       },
       {
         id: 'objectives',
         title: '2. Justificativas',
-        description: 'Consolide objetivo, justificativa da contratação e critério de agrupamento em lotes.',
+        description:
+          'Consolide objetivo, justificativa da contratação e critério de agrupamento em lotes.',
         kind: 'fields',
-        fieldIds: ['objective', 'hiringJustification', 'lotGroupingJustification'],
+        fieldIds: [
+          'objective',
+          'hiringJustification',
+          'lotGroupingJustification',
+        ],
       },
       {
         id: 'specifications',
         title: '3. Especificações Técnicas & Fornecimento',
-        description: 'Documente requisitos técnicos, garantia, prazos, instalação e regras operacionais.',
+        description:
+          'Documente requisitos técnicos, garantia, prazos, instalação e regras operacionais.',
         kind: 'fields',
         fieldIds: [
           'technicalSpecifications',
@@ -576,19 +614,22 @@ export const trTemplateDefinitions: TRTemplateDefinition[] = [
       {
         id: 'lots',
         title: '4. Matriz de Lotes',
-        description: 'Estruture lote, unidade/endereço, item, especificação, unidade de medida, quantidade e entrega.',
+        description:
+          'Estruture lote, unidade/endereço, item, especificação, unidade de medida, quantidade e entrega.',
         kind: 'lots',
       },
       {
         id: 'deliveries',
         title: '5. Instituição/Unidade & Endereços',
-        description: 'Cadastre a tabela auxiliar de instituições, CNPJ e endereços oficiais.',
+        description:
+          'Cadastre a tabela auxiliar de instituições, CNPJ e endereços oficiais.',
         kind: 'deliveries',
       },
       {
         id: 'contractual',
         title: '6. Condições Contratuais',
-        description: 'Complete amostra, vigência, orçamento, proposta, qualificação, pagamento, obrigações, fiscalização e penalidades.',
+        description:
+          'Complete amostra, vigência, orçamento, proposta, qualificação, pagamento, obrigações, fiscalização e penalidades.',
         kind: 'fields',
         fieldIds: [
           'sampleRequirement',
@@ -606,7 +647,8 @@ export const trTemplateDefinitions: TRTemplateDefinition[] = [
       {
         id: 'review',
         title: 'Revisão final',
-        description: 'Revise a prévia oficial consolidada do modelo SESI antes de enviar.',
+        description:
+          'Revise a prévia oficial consolidada do modelo SESI antes de enviar.',
         kind: 'review',
       },
     ],
@@ -704,7 +746,8 @@ export function buildReviewState(
   let totalRequired = 2
 
   if (!hasValue(context.title)) pendingLabels.push('Título da TR')
-  if (!hasValue(context.responsibleUnit)) pendingLabels.push('Unidade responsável')
+  if (!hasValue(context.responsibleUnit))
+    pendingLabels.push('Unidade responsável')
 
   Object.values(template.fields).forEach((field) => {
     if (!field.required) return
@@ -721,8 +764,10 @@ export function buildReviewState(
       pendingLabels.push('Ao menos um lote preenchido')
     } else {
       lots.forEach((lot, lotIndex) => {
-        if (!hasValue(lot.number)) pendingLabels.push(`Lote ${lotIndex + 1}: número do lote`)
-        if (!hasValue(lot.name)) pendingLabels.push(`Lote ${lotIndex + 1}: nome do lote`)
+        if (!hasValue(lot.number))
+          pendingLabels.push(`Lote ${lotIndex + 1}: número do lote`)
+        if (!hasValue(lot.name))
+          pendingLabels.push(`Lote ${lotIndex + 1}: nome do lote`)
         if (!lot.items.length) {
           pendingLabels.push(`Lote ${lotIndex + 1}: ao menos um item`)
           return
@@ -730,11 +775,16 @@ export function buildReviewState(
 
         lot.items.forEach((item, itemIndex) => {
           const prefix = `Lote ${lotIndex + 1}, item ${itemIndex + 1}`
-          if (!hasValue(item.location)) pendingLabels.push(`${prefix}: unidade/endereço`)
-          if (!hasValue(item.itemCode)) pendingLabels.push(`${prefix}: identificação do item`)
-          if (!hasValue(item.summary)) pendingLabels.push(`${prefix}: especificação resumida`)
-          if (!hasValue(item.unitMeasure)) pendingLabels.push(`${prefix}: unidade de medida`)
-          if (!hasValue(item.quantity)) pendingLabels.push(`${prefix}: quantidade total`)
+          if (!hasValue(item.location))
+            pendingLabels.push(`${prefix}: unidade/endereço`)
+          if (!hasValue(item.itemCode))
+            pendingLabels.push(`${prefix}: identificação do item`)
+          if (!hasValue(item.summary))
+            pendingLabels.push(`${prefix}: especificação resumida`)
+          if (!hasValue(item.unitMeasure))
+            pendingLabels.push(`${prefix}: unidade de medida`)
+          if (!hasValue(item.quantity))
+            pendingLabels.push(`${prefix}: quantidade total`)
           if (!hasValue(item.delivery)) pendingLabels.push(`${prefix}: entrega`)
         })
       })
@@ -745,7 +795,10 @@ export function buildReviewState(
     totalRequired += 1
     const deliveries =
       (documentData.deliveries as TRDeliveryLocation[] | undefined) ?? []
-    if (!deliveries.length || deliveries.every((entry) => !isDeliveryMeaningful(entry))) {
+    if (
+      !deliveries.length ||
+      deliveries.every((entry) => !isDeliveryMeaningful(entry))
+    ) {
       pendingLabels.push('Ao menos uma instituição/unidade preenchida')
     } else {
       deliveries.forEach((entry, index) => {
@@ -753,7 +806,8 @@ export function buildReviewState(
           pendingLabels.push(`Instituição/unidade ${index + 1}`)
         }
         if (!hasValue(entry.cnpj)) pendingLabels.push(`CNPJ ${index + 1}`)
-        if (!hasValue(entry.address)) pendingLabels.push(`Endereço ${index + 1}`)
+        if (!hasValue(entry.address))
+          pendingLabels.push(`Endereço ${index + 1}`)
       })
     }
   }
@@ -832,16 +886,18 @@ export function buildDocumentSections(
         isLotMeaningful
       )
       const rows = lots.flatMap((lot) =>
-        lot.items.filter(isLotItemMeaningful).map((item) => [
-          lot.number || '—',
-          lot.name || '—',
-          item.location || '—',
-          item.itemCode || '—',
-          item.summary || '—',
-          item.unitMeasure || '—',
-          item.quantity || '—',
-          item.delivery || '—',
-        ])
+        lot.items
+          .filter(isLotItemMeaningful)
+          .map((item) => [
+            lot.number || '—',
+            lot.name || '—',
+            item.location || '—',
+            item.itemCode || '—',
+            item.summary || '—',
+            item.unitMeasure || '—',
+            item.quantity || '—',
+            item.delivery || '—',
+          ])
       )
 
       sections.push({
@@ -937,7 +993,9 @@ function isLotItemMeaningful(item: TRLotItem) {
 }
 
 function isLotMeaningful(lot: TRLot) {
-  return [lot.number, lot.name].some(hasValue) || lot.items.some(isLotItemMeaningful)
+  return (
+    [lot.number, lot.name].some(hasValue) || lot.items.some(isLotItemMeaningful)
+  )
 }
 
 function isDeliveryMeaningful(entry: TRDeliveryLocation) {

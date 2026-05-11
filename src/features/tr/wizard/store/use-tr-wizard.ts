@@ -15,18 +15,30 @@ import {
   getTemplateDefinition,
   hasMeaningfulData,
 } from '@/features/tr/data/templates'
-import { createInitialTRWizardData, type TRWizardContext, type TRWizardData } from '../types'
+import {
+  createInitialTRWizardData,
+  type TRWizardContext,
+  type TRWizardData,
+} from '../types'
 
 type TRWizardState = TRWizardData & {
   nextStep: () => void
   prevStep: () => void
   goToStep: (step: number) => void
-  updateContext: (values: Partial<Omit<TRWizardContext, 'institution' | 'templateType'>>) => void
-  changeTemplate: (institution: TRInstitution, templateType?: TRTemplateType) => void
+  updateContext: (
+    values: Partial<Omit<TRWizardContext, 'institution' | 'templateType'>>
+  ) => void
+  changeTemplate: (
+    institution: TRInstitution,
+    templateType?: TRTemplateType
+  ) => void
   setFieldValue: (fieldId: string, value: string) => void
   addLot: () => void
   removeLot: (lotId: string) => void
-  updateLot: (lotId: string, values: Partial<Omit<TRLot, 'items' | 'id'>>) => void
+  updateLot: (
+    lotId: string,
+    values: Partial<Omit<TRLot, 'items' | 'id'>>
+  ) => void
   addLotItem: (lotId: string) => void
   updateLotItem: (
     lotId: string,
@@ -52,7 +64,10 @@ function syncState(
   documentData: TRDocumentData,
   partial?: Partial<TRWizardData>
 ) {
-  const template = getTemplateDefinition(context.institution, context.templateType)
+  const template = getTemplateDefinition(
+    context.institution,
+    context.templateType
+  )
   return {
     ...partial,
     context,
@@ -62,7 +77,10 @@ function syncState(
 }
 
 function clampStep(step: number, context: TRWizardContext) {
-  const template = getTemplateDefinition(context.institution, context.templateType)
+  const template = getTemplateDefinition(
+    context.institution,
+    context.templateType
+  )
   return Math.max(0, Math.min(step, template.sections.length))
 }
 
@@ -115,9 +133,9 @@ export const useTRWizard = create<TRWizardState>()((set, get) => ({
     }),
   addLot: () =>
     set((state) => {
-      const lots = ((state.documentData.lots as TRLot[] | undefined) ?? []).concat(
-        createEmptyLot()
-      )
+      const lots = (
+        (state.documentData.lots as TRLot[] | undefined) ?? []
+      ).concat(createEmptyLot())
       const documentData = { ...state.documentData, lots }
       return {
         ...syncState(state.context, documentData),
@@ -139,8 +157,8 @@ export const useTRWizard = create<TRWizardState>()((set, get) => ({
     }),
   updateLot: (lotId, values) =>
     set((state) => {
-      const lots = ((state.documentData.lots as TRLot[] | undefined) ?? []).map((lot) =>
-        lot.id === lotId ? { ...lot, ...values } : lot
+      const lots = ((state.documentData.lots as TRLot[] | undefined) ?? []).map(
+        (lot) => (lot.id === lotId ? { ...lot, ...values } : lot)
       )
       const documentData = { ...state.documentData, lots }
       return {
@@ -150,8 +168,11 @@ export const useTRWizard = create<TRWizardState>()((set, get) => ({
     }),
   addLotItem: (lotId) =>
     set((state) => {
-      const lots = ((state.documentData.lots as TRLot[] | undefined) ?? []).map((lot) =>
-        lot.id === lotId ? { ...lot, items: lot.items.concat(createEmptyLotItem()) } : lot
+      const lots = ((state.documentData.lots as TRLot[] | undefined) ?? []).map(
+        (lot) =>
+          lot.id === lotId
+            ? { ...lot, items: lot.items.concat(createEmptyLotItem()) }
+            : lot
       )
       const documentData = { ...state.documentData, lots }
       return {
@@ -161,15 +182,16 @@ export const useTRWizard = create<TRWizardState>()((set, get) => ({
     }),
   updateLotItem: (lotId, itemId, values) =>
     set((state) => {
-      const lots = ((state.documentData.lots as TRLot[] | undefined) ?? []).map((lot) =>
-        lot.id === lotId
-          ? {
-              ...lot,
-              items: lot.items.map((item) =>
-                item.id === itemId ? { ...item, ...values } : item
-              ),
-            }
-          : lot
+      const lots = ((state.documentData.lots as TRLot[] | undefined) ?? []).map(
+        (lot) =>
+          lot.id === lotId
+            ? {
+                ...lot,
+                items: lot.items.map((item) =>
+                  item.id === itemId ? { ...item, ...values } : item
+                ),
+              }
+            : lot
       )
       const documentData = { ...state.documentData, lots }
       return {
@@ -179,14 +201,16 @@ export const useTRWizard = create<TRWizardState>()((set, get) => ({
     }),
   removeLotItem: (lotId, itemId) =>
     set((state) => {
-      const lots = ((state.documentData.lots as TRLot[] | undefined) ?? []).map((lot) => {
-        if (lot.id !== lotId) return lot
-        const nextItems = lot.items.filter((item) => item.id !== itemId)
-        return {
-          ...lot,
-          items: nextItems.length ? nextItems : [createEmptyLotItem()],
+      const lots = ((state.documentData.lots as TRLot[] | undefined) ?? []).map(
+        (lot) => {
+          if (lot.id !== lotId) return lot
+          const nextItems = lot.items.filter((item) => item.id !== itemId)
+          return {
+            ...lot,
+            items: nextItems.length ? nextItems : [createEmptyLotItem()],
+          }
         }
-      })
+      )
       const documentData = { ...state.documentData, lots }
       return {
         ...syncState(state.context, documentData),
@@ -196,7 +220,8 @@ export const useTRWizard = create<TRWizardState>()((set, get) => ({
   addDeliveryLocation: () =>
     set((state) => {
       const deliveries = (
-        (state.documentData.deliveries as TRDeliveryLocation[] | undefined) ?? []
+        (state.documentData.deliveries as TRDeliveryLocation[] | undefined) ??
+        []
       ).concat(createEmptyDeliveryLocation())
       const documentData = { ...state.documentData, deliveries }
       return {
@@ -207,8 +232,11 @@ export const useTRWizard = create<TRWizardState>()((set, get) => ({
   updateDeliveryLocation: (deliveryId, values) =>
     set((state) => {
       const deliveries = (
-        (state.documentData.deliveries as TRDeliveryLocation[] | undefined) ?? []
-      ).map((entry) => (entry.id === deliveryId ? { ...entry, ...values } : entry))
+        (state.documentData.deliveries as TRDeliveryLocation[] | undefined) ??
+        []
+      ).map((entry) =>
+        entry.id === deliveryId ? { ...entry, ...values } : entry
+      )
       const documentData = { ...state.documentData, deliveries }
       return {
         ...syncState(state.context, documentData),
@@ -218,8 +246,11 @@ export const useTRWizard = create<TRWizardState>()((set, get) => ({
   removeDeliveryLocation: (deliveryId) =>
     set((state) => {
       const currentDeliveries =
-        (state.documentData.deliveries as TRDeliveryLocation[] | undefined) ?? []
-      const nextDeliveries = currentDeliveries.filter((entry) => entry.id !== deliveryId)
+        (state.documentData.deliveries as TRDeliveryLocation[] | undefined) ??
+        []
+      const nextDeliveries = currentDeliveries.filter(
+        (entry) => entry.id !== deliveryId
+      )
       const documentData = {
         ...state.documentData,
         deliveries: nextDeliveries.length

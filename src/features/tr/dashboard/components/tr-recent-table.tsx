@@ -1,7 +1,7 @@
-import { ArrowRight } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { ArrowRight } from 'lucide-react'
+import { Badge } from '@/shared/ui/badge'
+import { Button } from '@/shared/ui/button'
 import {
   Table,
   TableBody,
@@ -9,7 +9,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from '@/shared/ui/table'
 
 type RecentTR = {
   id: string
@@ -82,7 +82,12 @@ export function TRRecentTable({ items }: TRRecentTableProps) {
               </TableCell>
               <TableCell className='tabular-nums'>{item.updatedAt}</TableCell>
               <TableCell className='text-right'>
-                <Button variant='ghost' size='sm' asChild className='rounded-lg'>
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  asChild
+                  className='rounded-lg'
+                >
                   <Link to='/tr/$trId' params={{ trId: item.id }}>
                     Abrir
                     <ArrowRight className='size-4' />
